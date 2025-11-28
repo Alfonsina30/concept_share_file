@@ -17,10 +17,9 @@ class Cita {
   // Método para convertir el objeto Cita a un Map<String, String>
   Map<String, String> toMap() {
     return {
-      'nombre': nombre,
-      'fecha': fecha,
-      'hora': hora,
-      'codigo': codigo,
+      'nome': nombre,
+      'data': fecha,
+      'ora': hora
     };
   }
 }
@@ -60,7 +59,7 @@ class _CitasPageState extends State<CitasPage> {
         hora: '01:00 PM',
         fecha: 'giovedi 30 Marzo',
         codigo: 'Seguimiento'),
-     Cita(
+    Cita(
         nombre: 'Juan Pérez',
         hora: '10:00 AM',
         fecha: 'giovedi 24 Marzo',
@@ -75,7 +74,7 @@ class _CitasPageState extends State<CitasPage> {
         hora: '01:00 PM',
         fecha: 'giovedi 30 Marzo',
         codigo: 'Seguimiento'),
-         Cita(
+    Cita(
         nombre: 'Juan Pérez',
         hora: '10:00 AM',
         fecha: 'giovedi 24 Marzo',
@@ -90,7 +89,7 @@ class _CitasPageState extends State<CitasPage> {
         hora: '01:00 PM',
         fecha: 'giovedi 30 Marzo',
         codigo: 'Seguimiento'),
-         Cita(
+    Cita(
         nombre: 'Juan Pérez',
         hora: '10:00 AM',
         fecha: 'giovedi 24 Marzo',
@@ -105,7 +104,7 @@ class _CitasPageState extends State<CitasPage> {
         hora: '01:00 PM',
         fecha: 'giovedi 30 Marzo',
         codigo: 'Seguimiento'),
-         Cita(
+    Cita(
         nombre: 'Juan Pérez',
         hora: '10:00 AM',
         fecha: 'giovedi 24 Marzo',
@@ -120,7 +119,7 @@ class _CitasPageState extends State<CitasPage> {
         hora: '01:00 PM',
         fecha: 'giovedi 30 Marzo',
         codigo: 'Seguimiento'),
-         Cita(
+    Cita(
         nombre: 'Juan Pérez',
         hora: '10:00 AM',
         fecha: 'giovedi 24 Marzo',
@@ -135,7 +134,7 @@ class _CitasPageState extends State<CitasPage> {
         hora: '01:00 PM',
         fecha: 'giovedi 30 Marzo',
         codigo: 'Seguimiento'),
-         Cita(
+    Cita(
         nombre: 'Juan Pérez',
         hora: '10:00 AM',
         fecha: 'giovedi 24 Marzo',
@@ -150,7 +149,7 @@ class _CitasPageState extends State<CitasPage> {
         hora: '01:00 PM',
         fecha: 'giovedi 30 Marzo',
         codigo: 'Seguimiento'),
-         Cita(
+    Cita(
         nombre: 'Juan Pérez',
         hora: '10:00 AM',
         fecha: 'giovedi 24 Marzo',
@@ -165,7 +164,7 @@ class _CitasPageState extends State<CitasPage> {
         hora: '01:00 PM',
         fecha: 'giovedi 30 Marzo',
         codigo: 'Seguimiento'),
-         Cita(
+    Cita(
         nombre: 'Juan Pérez',
         hora: '10:00 AM',
         fecha: 'giovedi 24 Marzo',
@@ -180,7 +179,7 @@ class _CitasPageState extends State<CitasPage> {
         hora: '01:00 PM',
         fecha: 'giovedi 30 Marzo',
         codigo: 'Seguimiento'),
-         Cita(
+    Cita(
         nombre: 'Juan Pérez',
         hora: '10:00 AM',
         fecha: 'giovedi 24 Marzo',
@@ -195,7 +194,7 @@ class _CitasPageState extends State<CitasPage> {
         hora: '01:00 PM',
         fecha: 'giovedi 30 Marzo',
         codigo: 'Seguimiento'),
-         Cita(
+    Cita(
         nombre: 'Juan Pérez',
         hora: '10:00 AM',
         fecha: 'giovedi 24 Marzo',
@@ -210,7 +209,7 @@ class _CitasPageState extends State<CitasPage> {
         hora: '01:00 PM',
         fecha: 'giovedi 30 Marzo',
         codigo: 'Seguimiento'),
-         Cita(
+    Cita(
         nombre: 'Juan Pérez',
         hora: '10:00 AM',
         fecha: 'giovedi 24 Marzo',
@@ -225,7 +224,7 @@ class _CitasPageState extends State<CitasPage> {
         hora: '01:00 PM',
         fecha: 'giovedi 30 Marzo',
         codigo: 'Seguimiento'),
-         Cita(
+    Cita(
         nombre: 'Juan Pérez',
         hora: '10:00 AM',
         fecha: 'giovedi 24 Marzo',
@@ -240,7 +239,7 @@ class _CitasPageState extends State<CitasPage> {
         hora: '01:00 PM',
         fecha: 'giovedi 30 Marzo',
         codigo: 'Seguimiento'),
-         Cita(
+    Cita(
         nombre: 'Juan Pérez',
         hora: '10:00 AM',
         fecha: 'giovedi 24 Marzo',
@@ -255,7 +254,7 @@ class _CitasPageState extends State<CitasPage> {
         hora: '01:00 PM',
         fecha: 'giovedi 30 Marzo',
         codigo: 'Seguimiento'),
-         Cita(
+    Cita(
         nombre: 'Juan Pérez',
         hora: '10:00 AM',
         fecha: 'giovedi 24 Marzo',
@@ -270,7 +269,7 @@ class _CitasPageState extends State<CitasPage> {
         hora: '01:00 PM',
         fecha: 'giovedi 30 Marzo',
         codigo: 'Seguimiento'),
-         Cita(
+    Cita(
         nombre: 'Juan Pérez',
         hora: '10:00 AM',
         fecha: 'giovedi 24 Marzo',
@@ -287,19 +286,8 @@ class _CitasPageState extends State<CitasPage> {
         codigo: 'Seguimiento'),
   ];
 
-  bool _isLoading = false;
-
-  Future<void> shareCitasPdf(List<Cita> citas) async {
-
-    
-
-    DateTime data = DateTime.now();
-    
-    // --- DEFINIR EL CANAL ---
-    // El nombre debe ser único y coincidir exactamente con el de Kotlin
+  Future<void> shareCitasPdf(List<Cita> citas, BuildContext context) async {
     const MethodChannel _platformChannel = MethodChannel('com.tuapp/compartir');
-
-    if (_isLoading) return; //TODO: PENDIENTE COMPLETAR LA FUNCION _ISLOADING
 
     try {
       // Convertir la List<Cita> a List<Map<String, String>>
@@ -310,6 +298,16 @@ class _CitasPageState extends State<CitasPage> {
         'citas':
             citasMapList, // <--- La llave debe coincidir con 'citas' en Kotlin
         'fileName': 'ListaDeReservas.pdf',
+        'tituloPdf': "REPORTE DE CITAS AGENDADAS", //TODO: cambiar value
+        'subtituloPdf': "Documento generado el: ", //TODO: cambiar value
+        'testoHeaderPdf': {
+          "nome" : "Nombre", //TODO: cambiar value
+          "data": "Fecha", //TODO: cambiar value
+          "ora": "Hora" //TODO: cambiar value
+        }
+
+        //,
+        // 
       });
     } on PlatformException catch (e) {
       print("Fallo al compartir el PDF: ${e.message}");
@@ -323,6 +321,7 @@ class _CitasPageState extends State<CitasPage> {
         title: const Text('Mis Citas'),
         actions: [
           // Botón para disparar la acción de compartir
+        /*
           if (_isLoading)
             const Padding(
               padding: EdgeInsets.all(16.0),
@@ -333,10 +332,11 @@ class _CitasPageState extends State<CitasPage> {
               ),
             )
           else
+          */
             IconButton(
               icon: const Icon(Icons.share),
               onPressed: () {
-                shareCitasPdf(_listaDeCitas);
+                shareCitasPdf(_listaDeCitas, context);
               },
               tooltip: 'Compartir Lista (PDF)',
             ),

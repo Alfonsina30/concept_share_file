@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.net.Uri
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import java.io.File
@@ -32,13 +33,25 @@ class MainActivity: FlutterActivity() {
 
             if (call.method == "sharePdf") {
                 try {
+
                     // *** CAMBIO CLAVE: RECIBIR LISTA DE MAPAS ***
                     val citas = call.argument<List<Map<String, String>>>("citas")
                     val fileName = call.argument<String>("fileName") ?: "reporte_citas.pdf"
+                    val testoPerTablaPdf = call.argument<Map<String, Any>>("testoHeaderPdf") ?: {} as Map<String, Any>
+                    val tituloPdf = call.argument<String>("tituloPdf") ?: ""
+                    val subtituloPdf = call.argument<String>("subtituloPdf") ?: ""
+
 
                     // Generar y compartir el PDF
                     // Pasamos la lista de Map
-                    val file = generatePdf(fileName, citas ?: emptyList())
+                    val file = generatePdf(
+                        fileName,
+                        citas ?: emptyList(),
+                        testoPerTablaPdf,
+                        tituloPdf,
+                        subtituloPdf
+                        )
+
                     shareFile(file)
 
                     result.success(null)
@@ -95,7 +108,18 @@ class MainActivity: FlutterActivity() {
      * Genera un archivo PDF profesional a partir de una lista de citas estructuradas (Map).
      */
     @Throws(IOException::class)
-    private fun generatePdf(fileName: String, citas: List<Map<String, String>>): File {
+    private fun generatePdf(
+        fileName: String,
+        citas: List<Map<String, String>>,
+        pdfHeaderText : Map<String, Any>,
+        tituloPdf : String,
+        subtituloPdf : String
+        ): File {
+
+        val testoNome = pdfHeaderText["nome"] as String
+        val testoData = pdfHeaderText["data"] as String
+        val testoOra = pdfHeaderText["ora"] as String
+
         //
         val document = PdfDocument()
         val pageHeight = 842 // A4 alto (puntos)
@@ -134,10 +158,10 @@ class MainActivity: FlutterActivity() {
             textSize = 24f
             isFakeBoldText = true
             strokeWidth = 1f // Grosor
-            style = Paint.Style.STROKE
+            style = Paint.Style.FILL_AND_STROKE
         }
         // Lo colocamos a la derecha del logo o en el margen si no hay logo
-        canvas.drawText("REPORTE DE CITAS AGENDADAS", marginX, currentY + 20f, titlePaint)
+        canvas.drawText(tituloPdf, marginX, currentY + 20f, titlePaint)
         currentY += 60f // Espacio después del título
 
 
@@ -147,20 +171,25 @@ class MainActivity: FlutterActivity() {
             textSize = 14f
         }
         val dateFormat = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", java.util.Locale.getDefault())
-        canvas.drawText("Documento generado el: ${dateFormat.format(java.util.Date())}", marginX, currentY, subtitlePaint)
+        canvas.drawText("$subtituloPdf ${dateFormat.format(java.util.Date())}", marginX, currentY, subtitlePaint)
         currentY += 30f // Espacio antes de la tabla
 
         // --- 4. CREAR LA TABLA CON LA INFORMACIÓN DE LAS CITAS ---
-        val columnHeaders = listOf("Nombre", "Fecha", "Hora", "Código")
-        val columnKeys = listOf("nombre", "fecha", "hora", "codigo") // Claves del Map
+        val textPdfHeaders = listOf(testoNome, testoData, testoOra)
+
+        // Claves del Map de las citas
+        val valueTextPdfHeaders = listOf("nome", "data", "ora")
+
+        Log.d("generatePDF", "columnKey: $valueTextPdfHeaders columnHeaders: $textPdfHeaders")
+
         val totalWidth = pageWidth - 2 * marginX
 
         // Definición de anchos de columna (ajustar porcentajes según necesidad)
         val columnWidths = floatArrayOf(
-            totalWidth * 0.30f, // 30% Nombre
-            totalWidth * 0.30f, // 30% Fecha
-            totalWidth * 0.15f, // 15% Hora
-            totalWidth * 0.35f  // 35% Motivo
+            totalWidth * 0.45f, // 30% Nombre
+            totalWidth * 0.40f, // 30% Fecha
+            totalWidth * 0.25f, // 15% Hora
+           // totalWidth * 0.35f  // 35% Motivo
         )
 
         // --- Pinceles para la Tabla ---
@@ -171,52 +200,14 @@ class MainActivity: FlutterActivity() {
 
         // --- A. Dibujar Encabezado de la Tabla ---
         var currentX = marginX
-        for (i in columnHeaders.indices) {
+        for (i in textPdfHeaders.indices) {
             // Dibujar fondo de encabezado
             canvas.drawRect(currentX, currentY, currentX + columnWidths[i], currentY + rowHeight, headerPaint)
             // Dibujar texto de encabezado
-            canvas.drawText(columnHeaders[i], currentX + 5f, currentY + (rowHeight / 2) + 5f, headerTextPaint)
+            canvas.drawText(textPdfHeaders[i], currentX + 5f, currentY + (rowHeight / 2) + 5f, headerTextPaint)
             currentX += columnWidths[i]
         }
         currentY += rowHeight
-
-//        // --- B. Dibujar Filas de Datos ---
-//        for ((index, cita) in citas.withIndex()) {
-//
-//            // --- Manejo de Salto de Página ---
-//            if (currentY + rowHeight > pageHeight - marginX) {
-//                document.finishPage(page)
-//                val newPageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, document.pages.size + 1).create()
-//                page = document.startPage(newPageInfo)
-//                canvas = page.canvas
-//                currentY = 50f // Reset Y
-//
-//                // Volver a dibujar encabezado en la nueva página
-//                var headerX = marginX
-//                for (i in columnHeaders.indices) {
-//                    canvas.drawRect(headerX, currentY, headerX + columnWidths[i], currentY + rowHeight, headerPaint)
-//                    canvas.drawText(columnHeaders[i], headerX + 5f, currentY + (rowHeight / 2) + 5f, headerTextPaint)
-//                    headerX += columnWidths[i]
-//                }
-//                currentY += rowHeight
-//            }
-//
-//            // Dibujar línea horizontal divisoria entre filas
-//            canvas.drawLine(marginX, currentY, pageWidth - marginX, currentY, linePaint)
-//
-//            currentX = marginX
-//            for (i in columnKeys.indices) {
-//                val key = columnKeys[i]
-//                val text = cita[key] ?: ""
-//
-//                // Dibujar texto de la celda
-//                canvas.drawText(text, currentX + 5f, currentY + (rowHeight / 2) + 5f, contentTextPaint)
-//
-//                currentX += columnWidths[i]
-//            }
-//            currentY += rowHeight
-//        }
-
 
         // --- B. Dibujar Filas de Datos (MODIFICADO) ---
         for ((index, cita) in citas.withIndex()) {
@@ -226,8 +217,8 @@ class MainActivity: FlutterActivity() {
             val lineData = mutableMapOf<String, Pair<Float, List<String>>>()
 
             // Iteramos sobre las claves para encontrar el texto más largo y calcular la altura máxima
-            for (i in columnKeys.indices) {
-                val key = columnKeys[i]
+            for (i in valueTextPdfHeaders.indices) {
+                val key = valueTextPdfHeaders[i]
                 val text = cita[key] ?: ""
                 val width = columnWidths[i]
 
@@ -258,9 +249,9 @@ class MainActivity: FlutterActivity() {
 
                 // Volver a dibujar encabezado en la nueva página (lo puedes mover a una función separada)
                 var headerX = marginX
-                for (i in columnHeaders.indices) {
+                for (i in textPdfHeaders.indices) {
                     canvas.drawRect(headerX, currentY, headerX + columnWidths[i], currentY + rowHeight, headerPaint)
-                    canvas.drawText(columnHeaders[i], headerX + 5f, currentY + (rowHeight / 2) + 5f, headerTextPaint)
+                    canvas.drawText(textPdfHeaders[i], headerX + 5f, currentY + (rowHeight / 2) + 5f, headerTextPaint)
                     headerX += columnWidths[i]
                 }
                 currentY += rowHeight
@@ -273,8 +264,8 @@ class MainActivity: FlutterActivity() {
             // canvas.drawLine(marginX, currentY, pageWidth - marginX, currentY, linePaint)
 
             var currentX = marginX
-            for (i in columnKeys.indices) {
-                val key = columnKeys[i]
+            for (i in valueTextPdfHeaders.indices) {
+                val key = valueTextPdfHeaders[i]
                 val (height, lines) = lineData[key]!!
                 val width = columnWidths[i]
 
