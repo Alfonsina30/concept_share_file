@@ -1,0 +1,12 @@
+{   "@@locale": "es",
+
+
+    "fileName": "ListaDeReservas",
+    "tituloPdf": "REPORTE DE CITAS AGENDADAS",
+    "subtituloPdf": "Documento generado el: ",
+    "testoNomeHeaderPdf": "Nombre",
+    "testoDataHeaderPdf": "Fecha",
+    "testoOraHeaderPdf": "Hora",
+    "testoFinalPage": "Conserve este documento. No tiene validez legal sin la confirmación final de la aplicación."
+
+}

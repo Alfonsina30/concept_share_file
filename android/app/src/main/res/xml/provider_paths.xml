@@ -5,5 +5,5 @@ se pueden compartir de forma segura.
 'cache-path' se refiere al directorio 'context.getCacheDir()'
 -->
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <cache-path name="cache" path="." />
+    <cache-path name="cache" path="/" />
 </paths>
