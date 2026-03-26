@@ -311,7 +311,11 @@ class _CitasPageState extends State<CitasPage> {
     try {
       // Convertir la List<Cita> a List<Map<String, String>>
       final List<Map<String, String>> citasMapList =
-          citas.map((cita) => cita.toMap()).toList();
+          citas.map((cita){
+            return cita.toMap();
+          }
+          
+          ).toList();
 
       await platformChannel.invokeMethod('sharePdf', {
         'citas':

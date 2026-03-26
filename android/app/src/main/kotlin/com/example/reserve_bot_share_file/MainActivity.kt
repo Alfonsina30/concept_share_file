@@ -8,12 +8,13 @@ import androidx.annotation.NonNull
 
 class MainActivity: FlutterActivity() {
 
-    // PDF SERVICE +  SHARED FILE
+    //PDF SERVICE +  SHARED FILE
     private val channelPdf = "com.reserve_bot/compartirPdf"
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-
+        
+        //------------------PDF FILE ---------------------
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
             channelPdf
@@ -57,6 +58,9 @@ class MainActivity: FlutterActivity() {
                 result.notImplemented()
             }
         }
+
+
+        //-----
     }
 
 }
