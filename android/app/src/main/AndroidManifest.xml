@@ -18,6 +18,33 @@
                     the Android process has started. This theme is visible to the user
                     while the Flutter UI initializes. After that, this theme continues
                     to determine the Window background behind the Flutter UI. -->
+
+            <!-- AÑADIDO AL NUEVO CODIGO -->
+            <intent-filter android:label="Apri in Reservabot">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="content" />
+                <data android:host="*" />
+                <data android:mimeType="application/x-reservabot" />
+                <data android:mimeType="application/octet-stream" />
+            </intent-filter>
+
+            <intent-filter android:label="Apri File Reservabot">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:host="*" />
+                <data android:pathPattern=".*\\.reservabot" />
+                <data android:pathPattern=".*\\..*\\.reservabot" />
+                <data android:pathPattern=".*\\..*\\..*\\.reservabot" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.reservabot" />
+            </intent-filter>
+
+            <!-- FIN AÑADIDO AL NUEVO CODIGO -->
+
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme"
@@ -29,6 +56,9 @@
         </activity>
 
         <!--
+
+         <data android:mimeType="application/x-reservabot" />
+
         INICIO DE LA SECCIÓN AÑADIDA
         Esto registra el FileProvider. Es esencial.
         La autoridad (authorities) DEBE ser tu ID de paquete + ".provider".
@@ -58,6 +88,13 @@
 
          In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
     <queries>
+        <!-- AÑADIDO AL NUEVO CODIGO -->
+        <package android:name="com.whatsapp" />
+        <package android:name="com.whatsapp.w4b" />
+        <package android:name="com.google.android.gm" />
+        <package android:name="com.google.android.apps.docs" />
+        <!-- FIN AÑADIDO AL NUEVO CODIGO -->
+
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>

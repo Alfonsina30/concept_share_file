@@ -1,5 +1,8 @@
+# Ruta donde se encuentran tus archivos .arb
 arb-dir: lib/l10n
+
+# Nombre base de tus archivos .arb (e.g., app_en.arb, app_es.arb)
 template-arb-file: app_es.arb
+
+# Nombre de la clase que generará Flutter para acceder a las traducciones
 output-class: AppLocalizations
-output-localization-file: app_localizations.dart
-output-dir: .dart_tool/flutter_gen/gen_l10n
