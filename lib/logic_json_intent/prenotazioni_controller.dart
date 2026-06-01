@@ -60,10 +60,16 @@ class PrenotazioniController extends ChangeNotifier {
         } catch (e) {
           print("Il file non è un JSON valido: $e");
         }
-      },
+      }, // Questo va dentro l'onError dell'EventChannel
       onError: (dynamic error) {
-        // GESTIONE ERRORI PULITA
-        print("Errore dallo stream nativo: ${error.message}");
+        if (error is PlatformException) {
+          if (error.code == "FILE_TOO_LARGE") {
+            print("Errore: Il file selezionato è troppo pesante.");
+            // TODO: Mostra una SnackBar rossa: "File non supportato"
+          } else {
+            print("Errore generico in lettura: ${error.message}");
+          }
+        }
       },
       cancelOnError:
           false, // Se c'è un errore, continua ad ascoltare per futuri file

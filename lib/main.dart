@@ -116,7 +116,7 @@ class _CitasPageState extends State<CitasPage> {
 //
     const MethodChannel platformChannel =
         MethodChannel('com.reserve_bot/compartirPdf');
-
+//TODO:
     try {
       //**IMPORTANTE */
       final items = [

@@ -10,8 +10,6 @@ COMPORTAMIENTO SEA EN BACKGROUND & FOREGROUND: Cuando el file se abre desde Driv
 
 
 
-
-
 Proyecto realizado por Alfonsina para que el usuario en la app ReserveBot pueda compartir las citas(appuntamenti) que registro el bot en whatsapp por ejemplo, con otras app del sistema android 
 
 
@@ -35,11 +33,3 @@ Il Servizio invia questa lista al tuo State Manager (Provider, Riverpod, GetX, B
 
 Lo State Manager salva i dati in SQLite e avvisa la UI, che si aggiorna magicamente da sola mostrando le nuove prenotazioni.
 
-2. Il Filtro in Dart (L'"Ispettore" per i Dati)
-Una volta che Kotlin ha confermato che il file è piccolo e sembra testo, lo invia a Dart. Il compito di Dart è ispezionare il contenuto:
-
-È un JSON valido?
-
-È una List<Map>?
-
-Contiene le chiavi giuste (es. nome_evento)?
