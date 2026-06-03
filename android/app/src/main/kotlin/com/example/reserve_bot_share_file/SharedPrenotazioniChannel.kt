@@ -126,37 +126,6 @@ class SharedPrenotazioniChannel(
         }
     }
 
-
-
-//    private fun shareFile(file: File) {
-//            val authority = "${context.packageName}.provider"
-//            val uri: Uri = FileProvider.getUriForFile(context, authority, file)
-//
-//            val intent = Intent(Intent.ACTION_SEND)
-//            // CRUCIALE: Non usare "*/*". Usa un MIME type binario o personalizzato
-//            // Questo dice a WhatsApp: "Questo è un file specifico, non toccare il nome"
-//            intent.type = "application/x-reservabot"
-//
-//           // intent.type = "application/x-reservabot"
-//            intent.putExtra(Intent.EXTRA_STREAM, uri)
-//
-////            // 2. CRÍTICO: Usar ClipData para adjuntar metadatos del tipo de archivo
-////            val clipData = android.content.ClipData.newRawUri("Reservabot Data", uri)
-////            intent.clipData = clipData
-//
-//
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//
-//            println("DENTRO SHARE FILE INTENT $intent") //I/System.out(22371): DENTRO SHARE FILE INTENT Intent { act=android.intent.action.SEND dat=content://com.example.reserve_bot_share_file.provider/cache/lista_partecipanti.reservabot typ=application/x-reservabot flg=0x1 }
-//
-//            //-- apre show dialog
-//            val chooser = Intent.createChooser(intent, "Condividi dati evento")
-//          chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//
-//            context.startActivity(chooser)
-//        }
-
-
 }
 
 

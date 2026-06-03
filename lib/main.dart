@@ -120,7 +120,9 @@ class _CitasPageState extends State<CitasPage> {
     try {
       //**IMPORTANTE */
       final items = [
-        {"fileName": "eventi.reservabot"} //--cuando se recibe el file se filtra este key & value
+        {
+          "fileName": "eventi.reservabot"
+        } //--cuando se recibe el file se filtra este key & value
       ];
 
       // Convertir la List<Cita> a List<Map<String, String>>

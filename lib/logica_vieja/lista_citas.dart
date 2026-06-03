@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:reserve_bot_share_file/l10n/app_localizations.dart';
 
 class ListaCitas {
+
   static  List<Cita>citas() {
     return [
       Cita(
@@ -247,7 +248,7 @@ class ListaCitas {
           codigo: 'Seguimiento'),
     ];
   }
-
+/*
   Future<void> shareCitasPdf(
       {required List<Cita> citas, required BuildContext context}) async {
     //
@@ -289,7 +290,7 @@ class ListaCitas {
       print("Fallo al compartir el PDF: ${e.message}");
     }
   }
-
+*/
 
 
 }
