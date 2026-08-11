@@ -1,13 +1,10 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:reserve_bot_share_file/l10n/app_localizations.dart';
-import 'package:reserve_bot_share_file/logic_json_intent/prenotazioni_controller.dart';
-import 'package:reserve_bot_share_file/logica_vieja/lista_citas.dart';
+import 'package:reserve_bot_share_file/share_json/json_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:reserve_bot_share_file/share_pdf/share_pdf.dart';
+import 'package:reserve_bot_share_file/shared/example_citas.dart';
 
 void main() {
   //
@@ -15,7 +12,7 @@ void main() {
 
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (_) => PrenotazioniController()),
+      ChangeNotifierProvider(create: (_) => JsonController()),
     ],
     child: const MaterialApp(
       home: CitasPage(),
@@ -24,7 +21,6 @@ void main() {
       supportedLocales: [Locale('es')],
       localizationsDelegates: [
         AppLocalizations.delegate,
-        //-- widgets de material soporten diferentes idiomas
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate
@@ -33,7 +29,6 @@ void main() {
   ) as Widget);
 }
 
-// --- Tu página con la lista ---
 class CitasPage extends StatefulWidget {
   const CitasPage({super.key});
 
@@ -45,33 +40,36 @@ class _CitasPageState extends State<CitasPage> {
   @override
   Widget build(BuildContext context) {
     //
-    final prenotazioniController = context.watch<PrenotazioniController>();
+    final citasController = context.watch<JsonController>();
     //
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mis Citas'),
+        title: const Text('My home'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: () {
-              shareFile();
+          TextButton(
+            onPressed: () async =>
+                await context.read<JsonController>().shareJson(),
+            child: Text('share Json'),
+          ),
+          //
+          TextButton(
+            onPressed: () async {
+              await SharePdf.shareCitasPdf(
+                  citas: ExampleCitas.citas(), context: context);
             },
-            tooltip: 'Compartir Lista (PDF)',
+            child: Text('share PDF'),
           ),
         ],
       ),
-      body: (prenotazioniController.isLoading)
+      body: (citasController.isLoading)
           ? Center(
               child: CircularProgressIndicator(),
             )
           : ListView.builder(
-              itemCount: prenotazioniController.prenotazioni.length,
+              itemCount: citasController.citas.length,
               itemBuilder: (context, index) {
                 //
-                final map = prenotazioniController.prenotazioni[index];
-                final nome = map["nome"];
-                final data = map["data"];
-                final ora = map["ora"];
+                final citas = citasController.citas[index];
 
                 return Padding(
                   padding: EdgeInsets.symmetric(
@@ -80,7 +78,7 @@ class _CitasPageState extends State<CitasPage> {
                   child: ListTile(
                     leading: Icon(Icons.person),
                     title: Text(
-                      nome,
+                      citas.name,
                       style: TextStyle(
                           fontFamily: 'monospace', fontWeight: FontWeight.bold),
                     ),
@@ -89,14 +87,14 @@ class _CitasPageState extends State<CitasPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          data,
+                          citas.date,
                           style: TextStyle(
                               fontFamily: 'monospace',
                               fontWeight: FontWeight.bold),
                         ),
                         //
                         Text(
-                          ora,
+                          citas.hour,
                           style: TextStyle(
                               fontFamily: 'monospace',
                               fontWeight: FontWeight.bold),
@@ -109,37 +107,5 @@ class _CitasPageState extends State<CitasPage> {
               },
             ),
     );
-  }
-
-//************************************************** USAR  *****************************/
-  Future<void> shareFile() async {
-//
-    const MethodChannel platformChannel =
-        MethodChannel('com.reserve_bot/compartirPdf');
-//TODO:
-    try {
-      //**IMPORTANTE */
-      final items = [
-        {
-          "fileName": "eventi.reservabot"
-        } //--cuando se recibe el file se filtra este key & value
-      ];
-
-      // Convertir la List<Cita> a List<Map<String, String>>
-      final List<Map<String, String>> citasMapList =
-          ListaCitas.citas().map((cita) {
-        return cita.toMap();
-      }).toList();
-
-      items.addAll(citasMapList);
-
-      log("CITASSS $items");
-
-      final toJson = jsonEncode(items);
-
-      await platformChannel.invokeMethod('sharePdf', toJson);
-    } on PlatformException catch (e) {
-      print("Fallo al compartir el PDF: ${e.message}");
-    }
   }
 }

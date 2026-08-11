@@ -9,31 +9,24 @@ import io.flutter.plugin.common.EventChannel
 class MainActivity: FlutterActivity() {
 
     private val tagMainActivity = "MainActivity"
-    private val channelPrenotazioniName = "com.reserve_bot/compartirPdf"
-   // private var sharedChannel: SharedPrenotazioniChannel? = null
-    private val eventChannel = "com.reservabot.app/file_events"
+    private val channelJson = "com.example.sharejson"
+    private val eventChannel = "com.example.app_share/file"
     private var fileReceiverManager : FileReceiverManager? = null
 
-    /*
-Quando avvii l'app cliccando sulla tua icona (avvio normale, nessun file condiviso), Android passa per configureFlutterEngine e chiama handleIntent(intent).
-
-Dato che non c'è nessun file, handleIntent non fa niente. Quindi pendingFileData rimane null.
-
-Un attimo dopo, Flutter (la parte visiva in Dart) si sveglia e si connette al canale. Questo fa scattare il metodo onListen in Kotlin.
-
-Kotlin entra in onListen, guarda dentro pendingFileData, vede che è vuoto (null), e capisce al volo la situazione: cade nel blocco else e lancia il "NO_DATA" a Flutter.
-    */
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
         val binary = flutterEngine.dartExecutor.binaryMessenger
 
+        //----- SHARE PDF
+        SharePdfFile().configureFlutterEngine(flutterEngine, context)
+
         // 1. Inizializziamo il canale per INVIARE file a WhatsApp
-        SharedPrenotazioniChannel(
+        ShareJsonFile(
             context,
             binary,
-            channelPrenotazioniName
+            channelJson
         )
     // 2. Canale per RICEVERE file (Inizializziamo la nostra nuova classe)
         fileReceiverManager = FileReceiverManager(context)
