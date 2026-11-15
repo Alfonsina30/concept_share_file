@@ -1,4 +1,4 @@
-package com.example.reserve_bot_share_file
+package com.concept.reserve_bot_share_file
 
 import android.content.Context
 import android.content.Intent
