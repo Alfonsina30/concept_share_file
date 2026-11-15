@@ -1,5 +1,5 @@
 # Ruta donde se encuentran tus archivos .arb
-arb-dir: lib/l10n
+arb-dir: lib/presentation/l10n
 
 # Nombre base de tus archivos .arb (e.g., app_en.arb, app_es.arb)
 template-arb-file: app_es.arb

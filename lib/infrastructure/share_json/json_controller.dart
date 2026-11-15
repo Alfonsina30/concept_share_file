@@ -4,9 +4,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:reserve_bot_share_file/entity/citas_entity.dart';
-import 'package:reserve_bot_share_file/model/citas_model.dart';
-import 'package:reserve_bot_share_file/shared/example_citas.dart';
+import 'package:reserve_bot_share_file/domain/entity/citas_entity.dart';
+import 'package:reserve_bot_share_file/infrastructure/model/citas_model.dart';
+import 'package:reserve_bot_share_file/presentation/shared/example_citas.dart';
 
 class JsonController extends ChangeNotifier {
   //

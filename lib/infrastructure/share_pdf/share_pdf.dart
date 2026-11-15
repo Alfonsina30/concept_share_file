@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:reserve_bot_share_file/entity/citas_entity.dart';
-import 'package:reserve_bot_share_file/l10n/app_localizations.dart';
-import 'package:reserve_bot_share_file/model/citas_model.dart';
+import 'package:reserve_bot_share_file/domain/entity/citas_entity.dart';
+import 'package:reserve_bot_share_file/presentation/l10n/app_localizations.dart';
+import 'package:reserve_bot_share_file/infrastructure/model/citas_model.dart';
 
 class SharePdf {
   static Future<void> shareCitasPdf(

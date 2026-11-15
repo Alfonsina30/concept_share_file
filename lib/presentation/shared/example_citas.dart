@@ -1,4 +1,4 @@
-import 'package:reserve_bot_share_file/entity/citas_entity.dart';
+import 'package:reserve_bot_share_file/domain/entity/citas_entity.dart';
 
 class ExampleCitas {
   static List<Cita> citas() {

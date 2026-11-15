@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:reserve_bot_share_file/l10n/app_localizations.dart';
-import 'package:reserve_bot_share_file/share_json/json_controller.dart';
+import 'package:reserve_bot_share_file/presentation/l10n/app_localizations.dart';
+import 'package:reserve_bot_share_file/infrastructure/share_json/json_controller.dart';
 import 'package:provider/provider.dart';
-import 'package:reserve_bot_share_file/share_pdf/share_pdf.dart';
-import 'package:reserve_bot_share_file/shared/example_citas.dart';
+import 'package:reserve_bot_share_file/infrastructure/share_pdf/share_pdf.dart';
+import 'package:reserve_bot_share_file/presentation/shared/example_citas.dart';
 
 void main() {
   //
