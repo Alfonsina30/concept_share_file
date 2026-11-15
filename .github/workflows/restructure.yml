@@ -1,0 +1,37 @@
+name: Restructure lib
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  restructure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: |
+          NAME=$(grep '^name:' pubspec.yaml | awk '{print $2}')
+          mkdir -p lib/domain lib/infrastructure lib/presentation
+          git mv lib/entity lib/domain/entity
+          git mv lib/model lib/infrastructure/model
+          git mv lib/share_json lib/infrastructure/share_json
+          git mv lib/share_pdf lib/infrastructure/share_pdf
+          git mv lib/shared lib/presentation/shared
+          git mv lib/l10n lib/presentation/l10n
+          find lib test -name '*.dart' -print0 | xargs -0 sed -i \
+            -e "s#package:$NAME/entity/#package:$NAME/domain/entity/#g" \
+            -e "s#package:$NAME/model/#package:$NAME/infrastructure/model/#g" \
+            -e "s#package:$NAME/share_json/#package:$NAME/infrastructure/share_json/#g" \
+            -e "s#package:$NAME/share_pdf/#package:$NAME/infrastructure/share_pdf/#g" \
+            -e "s#package:$NAME/shared/#package:$NAME/presentation/shared/#g" \
+            -e "s#package:$NAME/l10n/#package:$NAME/presentation/l10n/#g"
+          sed -i 's#lib/l10n#lib/presentation/l10n#g' l10n.yaml
+          flutter pub get
+          flutter gen-l10n
+          flutter analyze --no-fatal-infos --no-fatal-warnings
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add -A
+          git commit -m "Restructure lib into domain/infrastructure/presentation"
+          git push
