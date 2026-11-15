@@ -6,7 +6,7 @@ Concept development (PoC) using Method Channels to communicate with Flutter with
 - Method and Event Channels 
 
 
-[Codice nativo Android (Kotlin)](android/app/src/main/kotlin/com/concept_share_file)
+[Codice nativo Android (Kotlin)](android/app/src/main/kotlin/com/example/concept_share_file)
 
 [Codice Flutter](lib)
 
